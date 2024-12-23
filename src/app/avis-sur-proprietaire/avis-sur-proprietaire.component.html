@@ -1,0 +1,84 @@
+<div class="dashboard-container">
+  <!-- Barre latérale -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>EliteAuto</h2>
+    </div>
+    <ul>
+      <li>
+        <a [routerLink]="['/publier-annonce']" routerLinkActive="active">
+          <i class="fas fa-car"></i> Publier une annonce
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/liste-pub']" routerLinkActive="active">
+          <i class="fas fa-tags"></i> Consulter les publications des clients
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/reservations-proprietaire']" routerLinkActive="active">
+          <i class="fas fa-calendar-alt"></i> Consulter les réservations de mes voitures
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/AvisEtRepProp']" routerLinkActive="active">
+          <i class="fas fa-comment-dots"></i> Consulter les réponses à mes avis
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/avisP']" routerLinkActive="active">
+          <i class="fas fa-comments"></i> Consulter les avis faite sur moi
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/assistanceP']" routerLinkActive="active">
+          <i class="fas fa-life-ring"></i> Service d'assistance
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accueil']" routerLinkActive="active">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="dashboard-content">
+    <header class="dashboard-header">
+      <h1 class="dashboard-title">Avis sur le propriétaire</h1>
+    </header>
+
+    <div class="avis-container">
+      <div *ngIf="avisList.length === 0">Aucun avis trouvé pour ce propriétaire.</div>
+
+      <div *ngFor="let avis of avisList" class="avis-card">
+        <p>
+          <img [src]="avis.imageClient" alt="Photo de {{ avis.nomClient }}" width="50" height="50" style="border-radius: 50%; margin-right: 10px;">
+          {{ avis.nomClient }}
+        </p>
+        <p><strong>Contenu :</strong> {{ avis.contenu }}</p>
+        <p><strong>Note :</strong>
+          <!-- Affichage des étoiles -->
+          <span *ngFor="let star of getStarRating(avis.note)" class="fa" [class.fa-star]="star.filled" [class.fa-star-o]="!star.filled"></span>
+        </p>
+
+        <!-- Bouton "Répondre" -->
+        <button (click)="toggleCommentForm(avis)">Répondre</button>
+
+        <div *ngIf="avis.showCommentForm">
+          <textarea [(ngModel)]="avis.commentaire" placeholder="Votre commentaire..."></textarea>
+          <div *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</div>
+          <button (click)="submitComment(avis)">Commenter</button>
+        </div>
+
+        <!-- Message de succès affiché après la publication -->
+        <div *ngIf="avis.successMessage" class="success-message">
+          {{ avis.successMessage }}
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteAuto - Location de Voitures Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    
+    </style>
+
+    
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">EliteAuto</div>
+            <ul class="nav-links">
+                <li><a [routerLink]="['/accueil']">Accueil</a></li>
+                <li><a [routerLink]="['/offres']">Nos Voitures</a></li>
+                <li><a (click)="openModal() ">Publier une annonce</a></li>
+                <li><a (click)="signOut()">signOut</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+  </header>
+  <main>
+
+<table class="hero">
+    <thead>
+      <tr>
+        <th>Marque</th>
+        <th>Modèle</th>
+      
+        <th>nom de proprietaire</th>
+      
+        <th>Date Début réservation </th>
+        <th>Date Fin réservation</th>
+        <th>Montant Total</th>
+        <th>Montant Payé</th>
+       <th> montantCaution</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reservation of reservations">
+        <td>{{ voituresMap[reservation.voitureId]?.marque}}</td>
+        <td>{{ voituresMap[reservation.voitureId]?.modele}}</td>
+        <td>{{ proprietairesMap[reservation.proprietaireId]?.nom || 'N/A' }}</td> 
+        
+        <td>{{ reservation.dateDebut }}</td>
+        <td>{{ reservation.dateFin }}</td>
+        <td>{{ reservation.montantTotal  }}TND</td>
+        <td>{{ reservation.montantPaye  }}TND</td>
+        <td>{{ voituresMap[reservation.voitureId]?.montantCaution}}TND</td>
+       
+        <td>
+          <button *ngIf="reservation.montantPaye < reservation.montantTotal" (click)="paySecondInstallment(reservation)">
+           payer la 2 éme tranche du montant 
+          </button>
+          <button (click)="openAvisModal(reservation)">Ajouter un avis</button>
+          <button (click)="fetchAvisForProprietaire(reservation.proprietaireId)">Consulter les avis</button>
+            
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <!-- Message de succès -->
+  <div *ngIf="paymentSuccess" class="success-message">
+    <p>paiement effectuée avec succée</p>
+  </div>
+  
+  <div *ngIf="avisModalVisible" class="modal">
+    <h3>Ajouter un Avis</h3>
+    <form (ngSubmit)="submitAvis()">
+      <textarea [(ngModel)]="avisContenu" placeholder="Votre avis" name="contenu" required></textarea>
+      <label for="note">Note :</label>
+      <select [(ngModel)]="avisNote" name="note" required (change)="onNoteChange($event)">
+        <option [value]="1">1</option>
+        <option [value]="2">2</option>
+        <option [value]="3">3</option>
+        <option [value]="4">4</option>
+        <option [value]="5">5</option>
+      </select>
+      <button type="submit">Soumettre</button>
+      <button type="button" (click)="closeAvisModal()">Annuler</button>
+    </form>
+  </div>
+  
+  <div *ngIf="avisModalVisibles" class="modal">
+    <div class="modal-content">
+        <h3>Les Avis des Propriétaires</h3>
+
+        <div class="avis-container">
+            <ul *ngIf="selectedProprietaireId !== null && avisProprietaires[selectedProprietaireId] && avisProprietaires[selectedProprietaireId].length > 0; else noAvis">
+                <li *ngFor="let avis of avisProprietaires[selectedProprietaireId]" class="avis-card">
+                    <div class="proprietaire-info">
+                        <p><strong>{{ avis.nomProprietaire }}</strong></p>
+                    </div>
+
+                    <div class="avis-details">
+                        <div class="avis-rating">
+                            <span *ngFor="let star of [].constructor(avis.note); let i = index" class="star">&#9733;</span>
+                            <span *ngFor="let star of [].constructor(5 - avis.note); let i = index" class="empty-star">&#9734;</span>
+                        </div>
+                        <p>{{ avis.contenu }}</p>
+                    </div>
+                </li>
+            </ul>
+            <ng-template #noAvis>
+                <p>Aucun avis pour ce propriétaire.</p>
+            </ng-template>
+        </div>
+        <button (click)="closeAvisModals()">Fermer</button>
+    </div>
+</div>
+
+  <!-- Message d'erreur -->
+  </main>
+  
+  <!-- Formulaire de paiement -->
+  <div *ngIf="showPaymentForm" class="payment-form-modal">
+    <h2>paiement de la 2éme tranche du montant</h2>
+    <p>la 2éme tranche + montant de Caution: {{ secondInstallmentAmount }}TND</p>
+    <form (submit)="submitPayment()">
+      <div id="card-element"></div> <!-- Stripe Card Element mount -->
+      <button type="submit">Pay Now</button>
+    </form>
+  </div>
+  <footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>À propos d'EliteAuto</h3>
+                <p>EliteAuto est votre partenaire de confiance pour la location de voitures de luxe. Nous nous engageons à fournir une expérience de conduite exceptionnelle.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <ul>
+                    <li><a [routerLink]="['/accueil']">Accueil</a></li>
+                    <li><a [routerLink]="['/offres']">Nos Voitures</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@eliteauto.com</p>
+                <p>Téléphone: ******</p>
+                <p>Adresse:*******</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 EliteAuto - Location de Voitures Premium. Tous droits réservés.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<div class="dashboard-container">
+  <!-- Barre latérale -->
+  <nav class="sidebar">
+      <div class="sidebar-header">
+          <h2>EliteAuto</h2>
+      </div>
+      <ul>
+          <li>
+              <a [routerLink]="['/ConsulterRecC']" routerLinkActive="active">
+                  <i class="fas fa-user"></i> Les Réclamations des clients
+              </a>
+          </li>
+          <li>
+              <a [routerLink]="['/ConsulterRecP']" routerLinkActive="active">
+                  <i class="fas fa-envelope"></i> Les Réclamations des propriétaires
+              </a>
+          </li>
+          <li>
+              <a [routerLink]="['/accueil']" routerLinkActive="active">
+                  <i class="fas fa-sign-out-alt"></i> Déconnexion
+              </a>
+          </li>
+      </ul>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+<main>
+  <h1>Réclamations des Propriétaires</h1>
+  <div *ngFor="let reclamation of reclamations; let i = index" class="response-card">
+    <div class="owner-profile">
+      <h3><strong>Nom du Propriétaire :</strong> {{ reclamation.nomProprietaire }}</h3>
+      <button class="email-button" (click)="openEmail(reclamation.emailProprietaire)">
+        <img src="assets/img.png" alt="Gmail" class="email-icon">
+      </button>
+    </div>
+
+    <p><strong>Téléphone :</strong> {{ reclamation.telephoneProprietaire }}</p>
+    <p><strong>Réclamation :</strong> {{ reclamation.contenuReclamation }}</p>
+
+    <!-- Bouton pour répondre à la réclamation -->
+    <button class="reply-button" (click)="toggleReplyInput(i)">
+      Répondre à cette réclamation
+    </button>
+
+    <!-- Zone de texte pour répondre -->
+    <!-- Zone de texte pour répondre -->
+    <div *ngIf="showReplyInput[i]" class="reply-input">
+      <textarea [(ngModel)]="replyContents[i]" rows="3" placeholder="Saisissez votre réponse ici..."></textarea>
+      <button class="send-button" (click)="sendReply(i, replyContents[i])">Envoyer</button>
+    </div>
+
+
+  </div>
+</main>
+</div>

@@ -1,0 +1,171 @@
+/* Structure de base */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px 0;
+}
+
+.sidebar-header h2 {
+  padding: 0 20px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #3498db;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  color: #ecf0f1;
+  text-decoration: none;
+  display: block;
+  padding: 12px 20px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background-color: #34495e;
+  border-left-color: #3498db;
+}
+
+.sidebar i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #ecf0f1;
+  overflow-y: auto;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+.avis-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.avis-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avis-card p {
+  margin: 10px 0;
+}
+
+.avis-card button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.avis-card button:hover {
+  background-color: #2980b9;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+
+.success-message {
+  color: green;
+  font-size: 16px;
+  margin-top: 10px;
+  background-color: #eaf5e4;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.warning-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.fas.fa-star {
+  color: gold;
+  font-size: 20px;
+}
+.fas.fa-star-half-alt {
+  color: gold;
+  font-size: 20px;
+}
+.fas.fa-star-half {
+  color: lightgray;
+  font-size: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .sidebar-header h2 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  
+  .dashboard-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #34495e;
+  }
+  .avis-container {
+    padding: 15px;
+  }
+}

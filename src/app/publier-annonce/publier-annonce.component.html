@@ -1,0 +1,133 @@
+
+
+<form (ngSubmit)="onSubmit()" #voitureForm="ngForm">
+    <div class="container">
+        <div class="form-container">
+            <h2>Publier une annonce de voiture</h2>
+
+            <!-- Champ Marque -->
+            <div>
+                <label for="marque">Marque</label>
+                <input type="text" id="marque" [(ngModel)]="voiture.marque" name="marque" required>
+                <p *ngIf="!voiture.marque && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            
+            <!-- Champ Modèle -->
+            <div>
+                <label for="modele">Modèle</label>
+                <input type="text" id="modele" [(ngModel)]="voiture.modele" name="modele" required>
+                <p *ngIf="!voiture.modele && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Année -->
+            <div>
+                <label for="annee">Année de fabrication </label>
+                <input type="number" id="annee" [(ngModel)]="voiture.annee" name="annee" required>
+                <p *ngIf="!voiture.annee && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Prix -->
+            <div>
+                <label for="prix">Prix de location par jour </label>
+                <input type="number" id="prix" [(ngModel)]="voiture.prix" name="prix" required>
+                <p *ngIf="!voiture.prix && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Couleur -->
+            <div>
+                <label for="couleur">Couleur</label>
+                <input type="text" id="couleur" [(ngModel)]="voiture.couleur" name="couleur" required>
+                <p *ngIf="!voiture.couleur && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+          
+
+            <!-- Champ Type de Carburant -->
+            <div>
+                <label for="typeCarburant">Type de carburant</label>
+                <input type="text" id="typeCarburant" [(ngModel)]="voiture.typeCarburant" name="typeCarburant" required>
+                <p *ngIf="!voiture.typeCarburant && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Nombre de Passagers -->
+            <div>
+                <label for="nombrePassagers">Nombre de passagers</label>
+                <select id="nombrePassagers" [(ngModel)]="voiture.nombrePassagers" name="nombrePassagers" required>
+                    <option value="" disabled selected>Sélectionnez</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                </select>
+                <p *ngIf="!voiture.nombrePassagers && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Nombre de Chevaux -->
+            <div>
+                <label for="nombreChevaux">Nombre de chevaux</label>
+                <select id="nombreChevaux" [(ngModel)]="voiture.nombreChevaux" name="nombreChevaux"  required>
+                    <option value="" disabled selected>Sélectionnez</option>
+                    <option value="70">3</option>
+                    <option value="100">4</option>
+                    <option value="150">5</option>
+                    <option value="200">6</option>
+                    <option value="250">7</option>
+             
+                </select>
+                <p *ngIf="!voiture.nombreChevaux && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Nombre de Portes -->
+            <div>
+                <label for="nombrePortes">Nombre de portes</label>
+                <select id="nombrePortes" [(ngModel)]="voiture.nombrePortes" name="nombrePortes" required>
+                    <option value="" disabled selected>Sélectionnez</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <p *ngIf="!voiture.nombrePortes && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Dates -->
+            <div>
+                <h3>Disponibilités</h3>
+                <div *ngFor="let disponibilite of voiture.disponibilites; let i = index">
+                    <label>Date de début :</label>
+                    <input type="date" [(ngModel)]="voiture.disponibilites[i].dateDebutDisponibilite" name="dateDebutDisponibilite{{i}}" required>
+                    
+                    <label>Date de fin :</label>
+                    <input type="date" [(ngModel)]="voiture.disponibilites[i].dateFinDisponibilite" name="dateFinDisponibilite{{i}}" required>
+                    
+                    <button type="button" (click)="removeDisponibilite(i)">Supprimer</button>
+                </div>
+                
+                <button type="button" (click)="addDisponibilite()">Ajouter une période</button>
+            </div>
+            
+          
+
+            <!-- Champ Montant de la Caution -->
+            <div>
+                <label for="montantCaution">Montant de la caution</label>
+                <input type="number" id="montantCaution" [(ngModel)]="voiture.montantCaution" name="montantCaution" required>
+                <p *ngIf="!voiture.montantCaution && voitureForm.submitted" style="color: red;">Ce champ est requis.</p>
+            </div>
+
+            <!-- Champ Image -->
+            <div>
+                <label for="image">Image</label>
+                <input type="file" id="image" (change)="onImageChange($event)" accept="image/*">
+            </div>
+
+            <!-- Bouton de Soumission -->
+            <button type="submit">Publier</button>
+
+            <!-- Message d'Information -->
+            <p *ngIf="message" style="color: green;">{{ message }}</p>
+            <p *ngIf="warningMessage" style="color: red;">{{ warningMessage }}</p>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,80 @@
+<div class="dashboard-container">
+  <!-- Barre latérale -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>EliteAuto</h2>
+    </div>
+    <ul>
+      <li>
+        <a [routerLink]="['/publier-annonce-client']" routerLinkActive="active">
+          <i class="fas fa-car"></i> Publier une annonce
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/offres']" routerLinkActive="active">
+          <i class="fas fa-tags"></i> Consulter les voitures
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/reservationC']" routerLinkActive="active">
+          <i class="fas fa-calendar-alt"></i> Consulter mes réservations
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/avisC']" routerLinkActive="active">
+          <i class="fas fa-comments"></i> Consulter les avis faits sur moi
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/assistanceC']" routerLinkActive="active">
+          <i class="fas fa-life-ring"></i> Service d'assistance
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/accueil']" routerLinkActive="active">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="dashboard-content">
+    <header class="dashboard-header">
+      <h1 class="dashboard-title">Les réponses sur vos avis</h1>
+    </header>
+    <div *ngIf="avisList.length > 0; else noAvis" class="avis-container">
+      <div *ngFor="let avis of avisList" class="avis-item">
+
+        <p><strong>Commentaire :</strong> {{ avis.contenu }}</p>
+        <p><strong>Note :</strong>
+          <ng-container *ngFor="let star of getStars(avis.note); let i = index">
+            <i class="fas" [ngClass]="{
+              'fa-star': star === 1,
+              'fa-star-half-alt': star === 0.5,
+              'fa-star-half': star === 0
+            }"></i>
+          </ng-container>
+        </p>
+        <button (click)="voirReponses(avis.contenu, 1)">Voir réponses</button>
+      </div>
+    </div>
+    <ng-template #noAvis>
+      <p class="noAvis">Aucun avis disponible pour ce client.</p>
+    </ng-template>
+  </div>
+
+  <!-- Modale pour les réponses -->
+  <div class="modale" *ngIf="selectedAvis">
+    <h3>Réponses pour l'avis :</h3><p>{{ selectedAvis }}</p>
+    <ul>
+      <li *ngFor="let reponse of selectedReponses">
+        <p>{{ reponse.commentaire }}</p>
+        <small>Propriétaire : {{ reponse.nom || 'Nom inconnu' }}</small>
+      </li>
+    </ul>
+    <button (click)="fermerReponses()">Fermer</button>
+  </div>
+  <div class="overlay" *ngIf="selectedAvis" (click)="fermerReponses()"></div>
+
+</div>

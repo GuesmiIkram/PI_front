@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+  <!-- Barre latérale -->
+  <nav class="sidebar">
+      <div class="sidebar-header">
+          <h2>EliteAuto</h2>
+      </div>
+      <ul>
+          <li>
+              <a [routerLink]="['/ConsulterRecC']" routerLinkActive="active">
+                  <i class="fas fa-user"></i> Les Réclamations des clients
+              </a>
+          </li>
+          <li>
+              <a [routerLink]="['/ConsulterRecP']" routerLinkActive="active">
+                  <i class="fas fa-envelope"></i> Les Réclamations des propriétaires
+              </a>
+          </li>
+          <li>
+              <a [routerLink]="['/accueil']" routerLinkActive="active">
+                  <i class="fas fa-sign-out-alt"></i> Déconnexion
+              </a>
+          </li>
+      </ul>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+<main>
+  <h1>Réclamations des clients</h1>
+  <div *ngFor="let reclamation of reclamations; let i = index" class="response-card">
+    <div class="owner-profile">
+      <h3><strong>Nom du client :</strong> {{ reclamation.nomClient }}</h3>
+    </div>
+
+    <p><strong>Réclamation :</strong> {{ reclamation.contenuReclamation }}</p>
+
+    <button class="reply-button" (click)="toggleReplyInput(i)">
+      Répondre à cette réclamation
+    </button>
+
+    <div *ngIf="showReplyInput[i]" class="reply-input">
+      <textarea [(ngModel)]="replyContents[i]" rows="3" placeholder="Saisissez votre réponse ici..."></textarea>
+      <button class="send-button" (click)="sendReply(i, replyContents[i])" [disabled]="!replyContents[i]">
+        Envoyer
+      </button>
+    </div>
+
+    <!-- Affichage du message de succès spécifique pour cette réclamation -->
+    <div *ngIf="successMessages[i]" class="success-message">
+      {{ successMessages[i] }}
+    </div>
+  </div>
+</main>
+  </div>
